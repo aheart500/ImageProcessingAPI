@@ -1,0 +1,35 @@
+{
+  "name": "imageprocessing",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Mohamed Nasser",
+  "license": "MIT",
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "nodemon dist/index.js",
+    "watch": "tsc --watch",
+    "lint": "eslint src",
+    "prettier": "prettier --config .prettierrc  --write 'src/**/*.ts' ",
+    "jasmine": "jasmine",
+    "build": "tsc",
+    "test": "tsc && jasmine"
+  },
+  "dependencies": {
+    "express": "^4.17.3",
+    "jasmine": "^4.0.2",
+    "jasmine-spec-reporter": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/jasmine": "^4.0.2",
+    "@types/node": "^17.0.23",
+    "@typescript-eslint/eslint-plugin": "^5.18.0",
+    "@typescript-eslint/parser": "^5.18.0",
+    "eslint": "^8.13.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.6.2",
+    "typescript": "^4.6.3"
+  }
+}
