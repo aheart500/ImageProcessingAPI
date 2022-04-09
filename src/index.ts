@@ -1,9 +1,54 @@
 import express from "express";
+import sharp from "sharp";
+import fs, { promises as fsPromises } from "fs";
+import path from "path";
 const app = express();
 const PORT = 3000;
 
-app.get("/", (req, res) => {
-  res.send("Hi");
+const INPUT_DIRECTORY = path.join("assets", "full");
+const OUTPUT_DIRECTORY = path.join("assets", "thumbnails");
+
+if (!fs.existsSync(OUTPUT_DIRECTORY)) {
+  fsPromises.mkdir(OUTPUT_DIRECTORY);
+}
+app.get("/image", async (req, res) => {
+  const { name, height, width, ext } = req.query as {
+    name: string;
+    height: string;
+    width: string;
+    ext: string;
+  };
+
+  const imageExtension = ext ? `.${ext}` : ".jpg";
+  const imageFileName = `${name}${imageExtension}`;
+  const savedImage = path.resolve(INPUT_DIRECTORY, imageFileName);
+
+  if (!fs.existsSync(savedImage)) {
+    res.status(400).send("Image doesn't exist.");
+    return;
+  }
+
+  try {
+    let parsedHeight = parseInt(height ?? 200);
+    let parsedWidth = parseInt(width ?? 200);
+
+    const newFilename = `${name}-W${parsedWidth}H${parsedHeight}${imageExtension}`;
+    const outputPath = path.resolve(OUTPUT_DIRECTORY, newFilename);
+
+    if (fs.existsSync(outputPath)) {
+      console.log("Image Accessed");
+      res.status(200).sendFile(outputPath);
+    } else {
+      console.log("Image Processed");
+      await sharp(`${INPUT_DIRECTORY}/${imageFileName}`)
+        .resize(parsedWidth, parsedHeight)
+        .toFile(`${OUTPUT_DIRECTORY}/${newFilename}`);
+      res.status(200).sendFile(outputPath);
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(400).send("Error resizing the image");
+  }
 });
 
 app.listen(PORT, () =>
