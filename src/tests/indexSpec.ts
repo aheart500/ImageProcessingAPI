@@ -1,3 +1,3 @@
-it("Tests testing", () => {
-  expect(5).toEqual(5);
-});
+it('Tests testing', () => {
+    expect(5).toEqual(5)
+})
