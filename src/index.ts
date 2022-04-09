@@ -29,8 +29,8 @@ app.get("/image", async (req, res) => {
   }
 
   try {
-    let parsedHeight = parseInt(height ?? 200);
-    let parsedWidth = parseInt(width ?? 200);
+    const parsedHeight = parseInt(height ?? 200);
+    const parsedWidth = parseInt(width ?? 200);
 
     const newFilename = `${name}-W${parsedWidth}H${parsedHeight}${imageExtension}`;
     const outputPath = path.resolve(OUTPUT_DIRECTORY, newFilename);
