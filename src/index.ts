@@ -2,11 +2,9 @@ import express from "express"
 import sharp from "sharp"
 import fs, { promises as fsPromises } from "fs"
 import path from "path"
+import { INPUT_DIRECTORY, OUTPUT_DIRECTORY } from "./constants"
 const app = express()
 const PORT = 3000
-
-const INPUT_DIRECTORY = path.join("assets", "full")
-const OUTPUT_DIRECTORY = path.join("assets", "thumbnails")
 
 if (!fs.existsSync(OUTPUT_DIRECTORY)) {
   fsPromises.mkdir(OUTPUT_DIRECTORY)
@@ -46,7 +44,6 @@ app.get("/image", async (req, res) => {
       res.status(200).sendFile(outputPath)
     }
   } catch (e) {
-    console.log(e)
     res.status(400).send("Error resizing the image")
   }
 })
@@ -54,3 +51,4 @@ app.get("/image", async (req, res) => {
 app.listen(PORT, () =>
   console.log("Server is listening on http://localhost:" + PORT)
 )
+export default app
