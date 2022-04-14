@@ -5,7 +5,7 @@ import fs from "fs"
 import { resizeImage } from "./utilities"
 const router = Router()
 
-router.get("/", async (req: Request, res: Response) => {
+router.get("/", async (req: Request, res: Response): Promise<void> => {
   const { name, height, width, ext } = req.query as {
     name: string
     height: string
@@ -26,13 +26,13 @@ router.get("/", async (req: Request, res: Response) => {
 
   try {
     const parsedHeight = parseInt(height ?? 200)
-    if (isNaN(parsedHeight)) {
-      res.status(400).send("Invalid height. Please provide a number")
+    if (isNaN(parsedHeight) || parsedHeight <= 0) {
+      res.status(400).send("Invalid height. Please provide a valid number")
       return
     }
     const parsedWidth = parseInt(width ?? 200)
-    if (isNaN(parsedWidth)) {
-      res.status(400).send("Invalid width. Please provide a number")
+    if (isNaN(parsedWidth) || parsedWidth <= 0) {
+      res.status(400).send("Invalid width. Please provide a valid number")
       return
     }
     const newFilename = `${name}-W${parsedWidth}H${parsedHeight}${imageExtension}`
